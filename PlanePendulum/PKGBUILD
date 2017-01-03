@@ -1,9 +1,10 @@
-# Submitter & Maintainer: Bradley Klee <bradklee@gmail.com>
+# Submitter: 	Bradley Klee <bradklee@gmail.com>
+# Maintainer: 	Bradley Klee <bradklee@gmail.com>
 pkgname=pendulumdata
 pkgver=1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Digital Pendulum Data & Analysis"
-arch=(x86_64)
+arch=('any')
 url="https://github.com/bradklee/DataAnalysis/tree/master/PlanePendulum"
 license=('GPL')
 depends=('python' 'gnuplot')
@@ -15,8 +16,9 @@ validpgpkeys=('EF6F2A81897A87838FDF67BB6B5766ADDC064400')
 build() {
 	cd "${srcdir}/PlanePendulum"
 	# configure read / write 
-	# arguments: prefixDir outDir
-	./config "/opt/PendulumData" "/home/$USER/Data/Pendulum"
+	# arguments: PROGRAMBASE OUTBASE
+	./config "/opt/PendulumData" "/tmp/Data/Pendulum"
+	# note: can alternatively use OUTBASE="/home/$USER/Data/Pendulum"
 	# fix install file
 	sed -i 's~PROGRAMBASE="~PROGRAMBASE="'${pkgdir}'~g' ./inst
 	sed -i 's~OUTBASE="~OUTBASE="'${pkgdir}'~g' ./inst	
@@ -24,7 +26,7 @@ build() {
 
 package() {
 	cd "${srcdir}/PlanePendulum"
-	# file tree, copy, permissions
+	# file tree & copy
 	./inst
 	
 	# link to executable
